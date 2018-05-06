@@ -29,10 +29,8 @@ function map(array, fn) {
 	var ar = [];
 
     for (let i of array) {
-        if (fn(i, array.indexOf(i), array)) {
-            ar.push(fn(i, array.indexOf(i)));
-
-        }    
+        
+        ar.push(fn(i, array.indexOf(i), array));   
     }
 
     return ar;
