@@ -7,16 +7,17 @@
  Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
  */
 function forEach(array, fn) {
-	var result = [];
-	for (var i of array) {
-    if(fn(i, array.indexOf(i), array) === true){
-    	result.push(i);
-    	result.push(array.indexOf(i));
-    	result.push(array)
-    }    
-   }
-   return result;
-}; 
+    var result = [];
+
+    for (var i of array) {
+        if (fn(i, array.indexOf(i), array) === true) {
+            result.push(i);
+            result.push(array.indexOf(i));
+        }    
+    }
+
+    return result;
+} 
 
 /*
  Задание 2:
@@ -45,12 +46,15 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
-	var result = [];
-	Object.keys(obj).forEach(function(i){
-		var o = i.toUpperCase();
-		result.push(o);
-	})
-	return result;
+    var result = [];
+
+    Object.keys(obj).forEach(function(i) {
+        var o = i.toUpperCase();
+
+        result.push(o);
+    })
+
+    return result;
 }
 
 /*
