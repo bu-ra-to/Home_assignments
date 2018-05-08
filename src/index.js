@@ -7,16 +7,10 @@
  Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
  */
 function forEach(array, fn) {
-    var result = [];
-
+    
     for (let i of array) {
-        if (fn(i, array.indexOf(i), array)) {
-            result.push(i);
-            result.push(array.indexOf(i));
-        }    
+        fn(i, array.indexOf(i), array)    
     }
-
-    return result;
 } 
 
 /*
@@ -43,6 +37,15 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
+
+	let result = initial || null,
+	    sum = result;
+
+	for (let i of array) {
+		var w = fn(sum, i, array.indexOf(i), array);
+		sum = w;		
+	}
+	return (sum)
 }
 
 /*
