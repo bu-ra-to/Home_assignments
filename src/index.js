@@ -62,7 +62,7 @@ function isSomeTrue(array, fn) {
 	if (array.length === 0) {
     throw "empty array";
   } else if (typeof fn != 'function'){
-    throw "***fn is not a function****";
+    throw "fn is not a function";
   } else if (array instanceof Array) {
     var result = [],
       falsy = [];
