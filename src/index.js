@@ -17,26 +17,28 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
-  try {
-    var result = [];
-    if (typeof array === "object" || array.length === 0) {
-      throw new Error("empty array");
-    } else if (fn() === undefined) {
-      throw new Error("fn is not a function");
-    }
+  if (array.length === 0) {
+    throw "empty array";
+  } else if (typeof fn !== 'function'){
+    throw "fn is not a function";
+  }
+  if (array instanceof Array) {
+    var result = [],
+      falsy = [];
 
     for (var i of array) {
-      if (fn(i)) {
-        result.push(i);
-      } else {
-        throw new Error("False");
+      result.push(i);
+      if (fn(i) !== true) {
+        falsy.push(i);
       }
     }
-    if (result != undefined) {
+    if (falsy.length != 0) {
+      return false;
+    } else {
       return true;
     }
-  } catch (e) {
-    console.log(e.message);
+  } else {
+    throw "empty array";
   }
 }
 
