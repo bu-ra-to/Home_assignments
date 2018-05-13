@@ -92,6 +92,29 @@ function isSomeTrue(array, fn) {
    - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn) {
+  if (typeof fn != "function") {
+    throw "fn is not a function";
+  }
+  var result = [],
+    filt = [];
+  if (arguments.length === 1) {
+    return result;
+  }
+
+  for (var i = 1; i < arguments.length; i++) {
+    fn(arguments[i]);
+    result.push(arguments[i]);
+    // if (fn(arguments[i]) === false) {
+    //   filt.push(arguments[i]);
+    //   console.log(filt)
+    // }
+  }
+  
+  // if (filt.length !== 0) {
+  // 	return filt;
+  // } else{
+  return result;
+// }
 }
 
 /*
