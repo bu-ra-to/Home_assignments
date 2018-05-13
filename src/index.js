@@ -17,28 +17,26 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
-  if (array.length === 0) {
+  if (array.length === 0 || !Array.isArray(array)) {
     throw "empty array";
-  } else if (typeof fn !== 'function'){
+  }
+  if (typeof fn !== 'function') {
     throw "fn is not a function";
   }
-  if (array instanceof Array) {
-    var result = [],
-      falsy = [];
 
-    for (var i of array) {
-      result.push(i);
-      if (fn(i) !== true) {
-        falsy.push(i);
-      }
+  var result = [],
+    falsy = [];
+
+  for (var i of array) {
+    result.push(i);
+    if (fn(i) !== true) {
+      falsy.push(i);
     }
-    if (falsy.length != 0) {
-      return false;
-    } else {
-      return true;
-    }
+  }
+  if (falsy.length != 0) {
+    return false;
   } else {
-    throw "empty array";
+    return true;
   }
 }
 
@@ -59,28 +57,28 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
-	if (array.length === 0) {
-    throw "empty array";
-  } else if (typeof fn != 'function'){
-    throw "fn is not a function";
-  } else if (array instanceof Array) {
-    var result = [],
-      falsy = [];
-
-    for (var i of array) {
-      if (fn(i) === true) {
-        result.push(i);
-      }      
-    }
-    if (result.length != 0) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
+  if (array.length === 0 || !Array.isArray(array) ) {
     throw "empty array";
   }
+  if (typeof fn != "function") {
+    throw "fn is not a function";
+  }
+
+  var result = [],
+    falsy = [];
+
+  for (var i of array) {
+    if (fn(i) === true) {
+      result.push(i);
+    }
+  }
+  if (result.length != 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
+
 
 /*
  Задание 3:
