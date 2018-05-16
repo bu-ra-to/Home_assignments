@@ -92,19 +92,29 @@ function isSomeTrue(array, fn) {
    - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn) {
-  try {
-    debugger;          
-    if(!(fn instanceof Function)) {
-      throw new Error ("fn is not a function");
-    }
-    if (arguments.length === 1) {
-      throw result;
-    }
-  } catch (e) {
-  	console.error(e.message)
-    }
-     
+  // debugger;
+  var result = [],
+    filt = [];
+
+  if (!(fn instanceof Function)) {
+    throw "fn is not a function";
   }
+  if (arguments.length === 1) {
+    return [];
+  }
+    for (let i = 1; i < arguments.length; i++) {
+      result.push(arguments[i]);
+      if (!fn(arguments[i])) {
+        filt.push(arguments[i]);
+      }
+    }
+  
+  if (filt.length !== 0) {
+    return filt;
+  }    
+  return result;  
+}
+
 /*
  Задание 4:
 
