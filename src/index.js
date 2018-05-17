@@ -11,7 +11,13 @@
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
 function createDivWithText(text) {
-}
+	var target = document.querySelector('body');
+	var div = document.createElement("DIV");
+	div.textContent = text;      
+    target.appendChild(div);
+    return div
+}	
+
 
 /*
  Задание 2:
