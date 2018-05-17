@@ -11,10 +11,8 @@
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
 function createDivWithText(text) {
-	var target = document.querySelector('body');
 	var div = document.createElement("DIV");
 	div.textContent = text;      
-    target.appendChild(div);
     return div
 }	
 
@@ -51,6 +49,15 @@ function prepend(what, where) {
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+	let whereNodes = where.children;
+	let arr = [];
+	
+	for( let i = 0; i <  whereNodes.length -1; i++){
+		if (whereNodes[i].nextElementSibling.nodeName === "P") {
+			arr.push(whereNodes[i]);
+		} 
+	}
+	return arr;
 }
 
 /*
