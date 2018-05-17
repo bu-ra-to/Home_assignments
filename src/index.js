@@ -80,10 +80,11 @@ function findAllPSiblings(where) {
 function findError(where) {
     var result = [];
 
-    for (var child of where.childNodes) {
-        result.push(child.innerText);
+    for (var child of where.children) {
+        if(child.type !== "text/javascript"){
+        	result.push(child.innerText);
+        }
     }
-
     return result;
 }
 
