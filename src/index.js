@@ -81,7 +81,7 @@ function findError(where) {
     var result = [];
 
     for (var child of where.children) {
-        if(child.type !== "text/javascript"){
+        if(child.nodeName !== "SCRIPT"){
         	result.push(child.innerText);
         }
     }
@@ -101,6 +101,11 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+	for (let nodes of where.childNodes){
+		if (nodes.nodeName === "#text"){
+			where.removeChild(nodes)
+		}
+	}
 }
 
 /*
