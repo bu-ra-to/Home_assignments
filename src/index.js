@@ -120,13 +120,12 @@ function deleteTextNodes(where) {
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
-function deleteTextNodesRecursive(where) {
+function deleteTextNodesRecursive(where) {  
+    var nodes = where.childNodes;
 
-  (function loop(node) {
-    var nodes = node.childNodes;
     for (let elem = 0; elem < nodes.length; elem++) {
     	if (nodes[elem].nodeName === "#text"){
-			node.removeChild(nodes[elem])
+			where.removeChild(nodes[elem])
 		}
       if (!nodes[elem]) {
         continue;
@@ -134,10 +133,10 @@ function deleteTextNodesRecursive(where) {
 
       if (nodes[elem].childNodes.length > 0 &&  nodes[elem].nodeName !== "SCRIPT") {
 
-        loop(nodes[elem]);
+        deleteTextNodesRecursive(nodes[elem]);
       }
     }
-  })(where)
+  
 }
 
 /*
