@@ -36,7 +36,37 @@ const homeworkContainer = document.querySelector('#homework-container');
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
+const newDiv = document.createElement('div');
+newDiv.innet
+homeworkContainer.appendChild(newDiv);
+
 function loadTowns() {
+  return fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+  .then(resolve => {
+    if (resolve.status >= 400){
+      return Promise.reject()
+    }
+    return resolve.json()
+  })
+  .then((sorted) => {
+    sorted.sort((a, b) => a.name.localeCompare(b.name));
+    return sorted
+  })
+  .catch(() => {
+    const newDiv = document.createElement('div');
+    newDiv.innerText = "Не удалось загрузить города";
+    const reloadButton = document.createElement('button');
+    reloadButton.innerText = "Повторить";
+    homeworkContainer.appendChild(newDiv);
+    homeworkContainer.appendChild(reloadButton);
+    reloadButton.addEventListener('click', () => {
+      if(homeworkContainer.contains(reloadButton)){
+        loadTowns();
+        homeworkContainer.removeChild(reloadButton);
+        homeworkContainer.removeChild(newDiv);
+      }
+    });   
+  }) 
 }
 
 /*
