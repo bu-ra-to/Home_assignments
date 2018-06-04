@@ -53,6 +53,7 @@ function loadTowns() {
     return sorted
   })
   .catch(() => {
+    loadingBlock.style.display = 'none';
     const newDiv = document.createElement('div');
     newDiv.innerText = "Не удалось загрузить города";
     const reloadButton = document.createElement('button');
@@ -81,6 +82,10 @@ function loadTowns() {
    isMatching('Moscow', 'Moscov') // false
  */
 function isMatching(full, chunk) {
+  if (full.toLowerCase().includes(chunk.toLowerCase())){
+    return true
+  } else {return false}
+  
 }
 
 /* Блок с надписью "Загрузка" */
