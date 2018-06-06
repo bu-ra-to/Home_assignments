@@ -47,84 +47,24 @@ const homeworkContainer = document.querySelector('#homework-container');
     filterNameInput.addEventListener('keyup', function() {
         filterNameInput.innerHTML = '';
         if (!(filterNameInput.value == '')) {
-            visibleOnThePage();
+            visibleOnPage();
         }
     });
-    /// 1.1 функция создающая ячейки с куками
-    function visibleOnThePage() {
-        let result = getCookies();
-        let cleanList = Cleaner();
-        let cookiePairs = Object.entries(result);
-        let cookieNames = Object.keys(result);
-        let cookieValues = Object.values(result);
-
-        //// 1.1.1 создание ячейки с именем и значением визуально на странице
-        function listCreator() {
-            let visibleOnThePage = cookiePairs.map(x => {
-                let newRow = document.createElement('tr');
-                let nameTd = document.createElement('td');
-                let valueTd = document.createElement('td');
-                nameTd.innerText = x[0];
-                valueTd.innerText = x[1];
-                newRow.appendChild(nameTd);
-                newRow.appendChild(valueTd);
-                listTable.appendChild(newRow);
-            });
-        }
-        ///1.1.2 Если нет введеного текста для фильтрации 
-
-        if (filterNameInput.value == '') {
-            listCreator()
-            // ///1.1.3 Если есть текст для фильтрации 
-        } else {
-            ///Фильтрация по совпадениям в имени
-            let filterNames = cookieNames.map((e) => {
-                if (isMatching(e, filterNameInput.value)) {
-
-                    let newRow = document.createElement('tr');
-                    let nameTd = document.createElement('td');
-                    let valueTd = document.createElement('td');
-                    nameTd.innerText = e;
-                    valueTd.innerText = cookieValues[cookieNames.indexOf(e)];
-                    newRow.appendChild(nameTd);
-                    newRow.appendChild(valueTd);
-                    listTable.appendChild(newRow);
-
-
-                }
-
-            })
-            ///// Фильтрация по совпадениям в значении
-            let filterValues = cookieValues.map((e) => {
-                if (isMatching(e, filterNameInput.value)) {
-                    let newRow = document.createElement('tr');
-                    let nameTd = document.createElement('td');
-                    let valueTd = document.createElement('td');
-                    nameTd.innerText = cookieNames[cookieValues.indexOf(e)];
-                    valueTd.innerText = e;
-                    newRow.appendChild(nameTd);
-                    newRow.appendChild(valueTd);
-                    listTable.appendChild(newRow);
-                }
-
-            })
-        }
-    }
-
 
 
     // 2. здесь можно обработать нажатие на кнопку "добавить cookie"
     addButton.addEventListener('click', () => {
         if (filterNameInput.value == '') {
-            getCookies();
+
             document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-            visibleOnThePage();
+            // 
 
             /// 2.2 Отчистка поля для введения новых кук  
 
             addNameInput.value = '';
             addValueInput.value = '';
         }
+        visibleOnPage();
     });
 
 
@@ -143,9 +83,6 @@ const homeworkContainer = document.querySelector('#homework-container');
 
     /// 4. Отчистка, чтоб куки не повторялись
     function Cleaner() {
-        // while (listTable.hasChildNodes()) {
-        //     listTable.removeChild(listTable.firstChild);
-        // };
         listTable.innerHTML = '';
 
     };
@@ -154,7 +91,7 @@ const homeworkContainer = document.querySelector('#homework-container');
     listTable.addEventListener('mouseover', (e) => {
         let rowToRemove = e.target.parentNode;
 
-        if (rowToRemove.tagName === "TR" && rowToRemove.children.length < 3) {
+        if (rowToRemove.tagName === "TR") {
             rowToRemove.appendChild(deleteButton);
         }
 
@@ -166,13 +103,11 @@ const homeworkContainer = document.querySelector('#homework-container');
     deleteButton.innerText = 'Удалить';
 
     deleteButton.addEventListener('click', e => {
-
         let rowToRemove = e.target.parentNode;
         let cookie = rowToRemove.firstElementChild.innerText;
         if (rowToRemove.tagName === "TR") {
             listTable.removeChild(rowToRemove);
         }
-
         document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 
     });
@@ -183,6 +118,18 @@ const homeworkContainer = document.querySelector('#homework-container');
         if (full.toLowerCase().includes(chunk.toLowerCase())) {
             return true
         } else { return false }
+
+    }
+    /// 8. Добавление списка на страницу
+    function visibleOnPage() {
+        let result = getCookies();
+        Cleaner();
+        for (let key in result) {
+            if (!(isMatching(key, filterNameInput.value) || isMatching(result[key], filterNameInput.value))) {
+                continue;
+            }
+            listTable.innerHTML += `<tr><td class="first_td">${key}</td><td>${result[key]}</td></tr>`;
+        }
 
     }
 
