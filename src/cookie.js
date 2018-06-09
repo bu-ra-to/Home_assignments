@@ -45,16 +45,16 @@ const homeworkContainer = document.querySelector('#homework-container');
 
     // 1. здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
     filterNameInput.addEventListener('keyup', function() {
-        filterNameInput.innerHTML = '';
-        if (!(filterNameInput.value == '')) {
+        // filterNameInput.innerHTML = '';
+        // if (!(filterNameInput.value == '')) {
             visibleOnPage();
-        }
+        // }
     });
 
 
     // 2. здесь можно обработать нажатие на кнопку "добавить cookie"
     addButton.addEventListener('click', () => {
-        if (filterNameInput.value == '') {
+        // if (filterNameInput.value == '') {
 
             document.cookie = `${addNameInput.value}=${addValueInput.value}`;
             // 
@@ -63,7 +63,7 @@ const homeworkContainer = document.querySelector('#homework-container');
 
             addNameInput.value = '';
             addValueInput.value = '';
-        }
+        // }
         visibleOnPage();
     });
 
