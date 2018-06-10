@@ -32,104 +32,90 @@
    homeworkContainer.appendChild(newDiv);
  */
 const homeworkContainer = document.querySelector('#homework-container');
-    // текстовое поле для фильтрации cookie
-    const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
-    // текстовое поле с именем cookie
-    const addNameInput = homeworkContainer.querySelector('#add-name-input');
-    // текстовое поле со значением cookie
-    const addValueInput = homeworkContainer.querySelector('#add-value-input');
-    // кнопка "добавить cookie"
-    const addButton = homeworkContainer.querySelector('#add-button');
-    // таблица со списком cookie
-    const listTable = homeworkContainer.querySelector('#list-table tbody');
+// текстовое поле для фильтрации cookie
+const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
+// текстовое поле с именем cookie
+const addNameInput = homeworkContainer.querySelector('#add-name-input');
+// текстовое поле со значением cookie
+const addValueInput = homeworkContainer.querySelector('#add-value-input');
+// кнопка "добавить cookie"
+const addButton = homeworkContainer.querySelector('#add-button');
+// таблица со списком cookie
+const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-    // 1. здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    filterNameInput.addEventListener('keyup', function() {
-        // filterNameInput.innerHTML = '';
-        // if (!(filterNameInput.value == '')) {
-            visibleOnPage();
-        // }
-    });
+// 1. здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+filterNameInput.addEventListener('keyup', function() {
+    visibleOnPage();
+});
 
 
-    // 2. здесь можно обработать нажатие на кнопку "добавить cookie"
-    addButton.addEventListener('click', () => {
-        // if (filterNameInput.value == '') {
+// 2. здесь можно обработать нажатие на кнопку "добавить cookie"
+addButton.addEventListener('click', () => {
+    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+    visibleOnPage();
+});
 
-            document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-            // 
+// 3. Get cookies name and value
 
-            /// 2.2 Отчистка поля для введения новых кук  
+function getCookies() {
+    return document.cookie
+        .split('; ')
+        .filter(Boolean)
+        .map(cookie => cookie.match(/^([^=]+)=(.+)/))
+        .reduce((obj, [, name, value]) => {
+            obj[name] = value;
+            return obj;
+        }, {});
+};
 
-            addNameInput.value = '';
-            addValueInput.value = '';
-        // }
-        visibleOnPage();
-    });
+/// 4. Отчистка, чтоб куки не повторялись
+function Cleaner() {
+    listTable.innerHTML = '';
 
+};
 
-    // // 3. Get cookies name and value
+/// 5. Появление кнопки "Удалить"
+listTable.addEventListener('mouseover', (e) => {
+    let rowToRemove = e.target.parentNode;
 
-    function getCookies() {
-        return document.cookie
-            .split('; ')
-            .filter(Boolean)
-            .map(cookie => cookie.match(/^([^=]+)=(.+)/))
-            .reduce((obj, [, name, value]) => {
-                obj[name] = value;
-                return obj;
-            }, {});
-    };
-
-    /// 4. Отчистка, чтоб куки не повторялись
-    function Cleaner() {
-        listTable.innerHTML = '';
-
-    };
-
-    /// 5. Появление кнопки "Удалить"
-    listTable.addEventListener('mouseover', (e) => {
-        let rowToRemove = e.target.parentNode;
-
-        if (rowToRemove.tagName === "TR") {
-            rowToRemove.appendChild(deleteButton);
-        }
-
-    })
-
-    /// 6. Удаление куков при нажатии кнопки "Удалить"
-
-    let deleteButton = document.createElement('button');
-    deleteButton.innerText = 'Удалить';
-
-    deleteButton.addEventListener('click', e => {
-        let rowToRemove = e.target.parentNode;
-        let cookie = rowToRemove.firstElementChild.innerText;
-        if (rowToRemove.tagName === "TR") {
-            listTable.removeChild(rowToRemove);
-        }
-        document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-
-    });
-
-    //// 7.  Поиск совпадений в поле фильтрации и куках
-
-    function isMatching(full, chunk) {
-        if (full.toLowerCase().includes(chunk.toLowerCase())) {
-            return true
-        } else { return false }
-
-    }
-    /// 8. Добавление списка на страницу
-    function visibleOnPage() {
-        let result = getCookies();
-        Cleaner();
-        for (let key in result) {
-            if (!(isMatching(key, filterNameInput.value) || isMatching(result[key], filterNameInput.value))) {
-                continue;
-            }
-            listTable.innerHTML += `<tr><td class="first_td">${key}</td><td>${result[key]}</td></tr>`;
-        }
-
+    if (rowToRemove.tagName === "TR") {
+        rowToRemove.appendChild(deleteButton);
     }
 
+})
+
+/// 6. Удаление куков при нажатии кнопки "Удалить"
+
+let deleteButton = document.createElement('button');
+deleteButton.innerText = 'Удалить';
+
+deleteButton.addEventListener('click', e => {
+    let rowToRemove = e.target.parentNode;
+    let cookie = rowToRemove.firstElementChild.innerText;
+    if (rowToRemove.tagName === "TR") {
+        listTable.removeChild(rowToRemove);
+    }
+    document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+
+});
+
+//// 7.  Поиск совпадений в поле фильтрации и куках
+
+function isMatching(full, chunk) {
+    if (full.toLowerCase().includes(chunk.toLowerCase())) {
+        return true
+    } else { return false }
+
+}
+/// 8. Добавление списка на страницу
+function visibleOnPage() {
+    let result = getCookies();
+    Cleaner();
+    for (let key in result) {
+        if (!(isMatching(key, filterNameInput.value) || isMatching(result[key], filterNameInput.value))) {
+            continue;
+        }
+        listTable.innerHTML += `<tr><td class="first_td">${key}</td><td>${result[key]}</td></tr>`;
+    }
+
+}
